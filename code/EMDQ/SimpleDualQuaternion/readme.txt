@@ -1,5 +1,5 @@
 % This is the simplied version of dual quaternion in both 3D and 2D situations.
-% Please note that dual quaternion can do much more than what we used here.
+% Please note that dual quaternion can do much more than what we use here.
 % Written by Haoyin Zhou (Surgical Planning Lab, Brigham and Women's Hospital, Harvard Medical School)
 % 5/25/2019
 % zhouhaoyin@bwh.harvard.edu or zhouhaoyin@gmail.com

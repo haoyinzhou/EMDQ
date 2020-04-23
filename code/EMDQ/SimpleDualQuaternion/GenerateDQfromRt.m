@@ -1,4 +1,4 @@
-function [ outDualQ ] = GenerateDQfromRt( R, T)
+function [ outDualQ ] = GenerateDQfromRt(R, T)
 
     if (size(R,1) == 3)
         QR = rotMatrix2dquat(R);

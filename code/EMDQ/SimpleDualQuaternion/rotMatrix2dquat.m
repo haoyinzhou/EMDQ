@@ -12,7 +12,7 @@ function dq = rotMatrix2dquat(R)
 %         dq(:,1) = R(1,1,:);
 %         dq(:,2) = R(2,1,:);
         dq = zeros(N,4);    
-        dq(:,1) = 0.5 * sqrt(1 + R(1,1,:) + R(2,2,:) + 1.0);
+        dq(:,1) = 0.5 * sqrt(2.0 + R(1,1,:) + R(2,2,:));
         temp = 0.25 / dq(:,1);
         dq(:,2) = temp .* ( R(2,1,:) - R(1,2,:));
 end

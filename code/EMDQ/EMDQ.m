@@ -17,8 +17,8 @@
 % params: please find the file: EMDQ_Initialization_2D(or 3D).m
 %
 % Output Pamameters:
-% inliersMask_RANSAC: outliers removal results of R1P-RNSC
-% inliersMask_final: outliers removal results of EMDQ
+% inliersMask_RANSAC: outliers removal results of R1P-RNSC (0 and 1)
+% inliersMask_final: outliers removal results of EMDQ (0 and 1)
 % dq_points and mu_points: the dual-quertion and scale factors of the feature matches 
 %
 % This program is distributed in the hope that it will be useful, but
@@ -56,8 +56,9 @@ function [inliersMask_R1P_RNSC, inliersMask_EMDQ, dq_points, mu_points] = EMDQ( 
 %     SuccessfulRANSACCount = 0;
     
     for ransactry = 1:MaxTry
-        benchPid = ransactryid(ransactry);  % randomly select a point as the benchmark.
-        if inliersMask_R1P_RNSC(benchPid) > 0
+          benchPid = ransactryid(ransactry);  % randomly select a point as the benchmark.
+%         benchPid = 170;  % randomly select a point as the benchmark.
+         if inliersMask_R1P_RNSC(benchPid) > 0
             continue;
         end
         if (punish < ransactry)
@@ -150,7 +151,7 @@ function [inliersMask_R1P_RNSC, inliersMask_EMDQ, dq_points, mu_points] = EMDQ( 
     
     distance_all = distance_all';
     p = exp(-distance_all.^2 / (2 * sigma2)); % initialization
-    p = p ./ (p + params.a * sigma2 *(1-gamma)/gamma );
+    p = p ./ (p + params.a * (2 * pi * sigma2)^(D/2) *(1-gamma)/gamma );
     p = p .* SumRNSCWeight';    
     
     %% EM iterations

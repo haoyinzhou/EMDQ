@@ -5,22 +5,22 @@
 % Zhou, Haoyin, and Jayender Jagadeesan. "Smooth Deformation Field-based 
 % Mismatch Removal in Real-time."
 
-clear
+clear 
 clc
 close all
 IniToolbox;
 
 %% the input pair of images, we prepared some pairs of images for this demo
-ImgPath1 = [ '../data/DUT_Set001_Img025_05.bmp'];
-ImgPath2 = [ '../data/DUT_Set001_Img065_05.bmp'];
-% ImgPath1 = [ '../data/liver1.jpg'];
-% ImgPath2 = [ '../data/liver2.jpg'];
+% ImgPath1 = [ '../data/DUT_Set001_Img025_05.bmp'];
+% ImgPath2 = [ '../data/DUT_Set001_Img065_05.bmp'];
+ImgPath1 = [ '../data/liver1.jpg'];
+ImgPath2 = [ '../data/liver2.jpg'];
 % ImgPath1 = [ '../data/HamlynData1.jpg'];
 % ImgPath2 = [ '../data/HamlynData2.jpg'];
 % ImgPath1 = [ '../data/church1.jpg'];
 % ImgPath2 = [ '../data/church2.jpg'];
 
-%% standard matlab way to obtain SURF matches, it could replaced with any other ways of matching points
+%% standard matlab way to obtain SURF matches, it could be replaced with other ways
 I1 = imread(ImgPath1);
 I2 = imread(ImgPath2);
 I1_gray = rgb2gray(I1);
@@ -35,31 +35,38 @@ indexPairs = matchFeatures(f1,f2);
 matchedPoints1 = vpts1(indexPairs(:,1));
 matchedPoints2 = vpts2(indexPairs(:,2));            
 
-X = matchedPoints1.Location;
-Y = matchedPoints2.Location;
-
-X1 = X'; X2 = Y';
+X1 = matchedPoints1.Location';
+X2 = matchedPoints2.Location';
 
 %% EMDQ
-
+% the initialization of EMDQ
 [EMDQscale] = GetDataScaleForEMDQ_2D( size(I2,2),size(I2,1));
 EMDQparams = EMDQ_Initialization_2D(EMDQscale);
-[inlfiersMask_RANSAC, inliersMask_final, dq_points, mu_points] = EMDQ(X1, X2, EMDQparams);
+
+% the main algorithm
+tic
+[inliersMask_RANSAC, inliersMask_final, dq_points, mu_points] = EMDQ(X1, X2, EMDQparams);
+toc
+
+% visulization 1
 ShowMatchOutliersRemovalResults( I1, X1, X2, inliersMask_final, 'EMDQ' );
 plot(X1(1,inliersMask_final),X1(2,inliersMask_final),'bo', 'MarkerSize',3,'LineWidth', 1.5);
 
+% visulization 2
 ShowMatchOutliersRemovalResults( I2, X1, X2, inliersMask_final, 'EMDQ' );
 plot(X2(1,inliersMask_final),X2(2,inliersMask_final),'bo', 'MarkerSize',3,'LineWidth', 1.5);
 
-[gridcoord, gridcoord_dq, dq_grid, mu_grid, gridmask] = GenerateGridDeformationField( X2(:,inliersMask_final), dq_points(inliersMask_final,:), mu_points(inliersMask_final,:), 50, EMDQparams, size(I1,2), size(I1,1), 1.5);
+% generation and visulization of the deformation field 
+% [gridcoord, gridcoord_dq, dq_grid, mu_grid, gridmask] = GenerateGridDeformationField( X2(:,inliersMask_final), dq_points(inliersMask_final,:), mu_points(inliersMask_final,:), 50, EMDQparams, size(I1,2), size(I1,1), 1.5);
+[gridcoord, gridcoord_dq, dq_grid, mu_grid, gridmask] = GenerateGridDeformationField( X2(:,inliersMask_final), dq_points(inliersMask_final,:), mu_points(inliersMask_final,:), 50, EMDQparams, size(I1,2), size(I1,1), 0.0);
 ShowGridDeformationField(I2, gridcoord, gridcoord_dq, gridmask);
 
 %% VFC
 if ~exist('conf', 'var'), conf = []; end
 conf = VFC_init(conf);
 
-[nX, nY, normal]=norm2(X,Y);
-VecFld=SparseVFC(nX, nY-nX, conf);
+[nX, nY, normal]=norm2(X1',X2');
+VecFld=FastVFC(nX, nY-nX, conf); % could also try FastVFC or SparseVFC
 VFCmask = zeros(1,size(X1,2));
 VFCmask(VecFld.VFCIndex) = 1;
 VFCmask = logical(VFCmask);
@@ -80,6 +87,7 @@ LPMmask = logical(LPMmask);
 ShowMatchOutliersRemovalResults( I1, X1, X2, LPMmask, 'LPM' );
 
 %% LMR
+% tested on Matlab 2014a, may have some problems on other versions, such as 2017b
 LMRnet = load('./LMR/Trained_Model/Net.mat'); % used by the LMR algorithm
 
 LMRidx = LMR_func(X1',X2',LMRnet.net);

@@ -1,6 +1,4 @@
 %ini toolbox paths
-addpath(genpath('./common'));
-
 addpath(genpath('./EMDQ'));
 addpath(genpath('./VFC_code'));
 addpath(genpath('./AHC'));
