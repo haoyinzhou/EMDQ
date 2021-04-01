@@ -13,12 +13,12 @@ IniToolbox;
 %% the input pair of images, we prepared some pairs of images for this demo
 % ImgPath1 = [ '../data/DUT_Set001_Img025_05.bmp'];
 % ImgPath2 = [ '../data/DUT_Set001_Img065_05.bmp'];
-ImgPath1 = [ '../data/liver1.jpg'];
-ImgPath2 = [ '../data/liver2.jpg'];
+% ImgPath1 = [ '../data/liver1.jpg'];
+% ImgPath2 = [ '../data/liver2.jpg'];
 % ImgPath1 = [ '../data/HamlynData1.jpg'];
 % ImgPath2 = [ '../data/HamlynData2.jpg'];
-% ImgPath1 = [ '../data/church1.jpg'];
-% ImgPath2 = [ '../data/church2.jpg'];
+ImgPath1 = [ '../data/church1.jpg'];
+ImgPath2 = [ '../data/church2.jpg'];
 
 %% standard matlab way to obtain SURF matches, it could be replaced with other ways
 I1 = imread(ImgPath1);

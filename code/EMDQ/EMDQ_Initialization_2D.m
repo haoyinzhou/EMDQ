@@ -12,7 +12,7 @@ function [ params ] = EMDQ_Initialization_2D(scale)
     params.LeastNumberOfInlierRANSACTrial = 5; 
     
     %% The number of neighboring points found by KD-tree 
-    params.NeighborCount = 16;
+    params.NeighborCount = 30;
     
     %% To build connections between feature matches
     % default value: r = 80 pixels for 800x600 reslution.
@@ -38,7 +38,7 @@ function [ params ] = EMDQ_Initialization_2D(scale)
     params.pThreshold = 0.5; 
     
     %% Number of points used in sparse RANSAC
-    params.N_sparse = 100;
+%     params.N_sparse = 100;
     
 end
 
