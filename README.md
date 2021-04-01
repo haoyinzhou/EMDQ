@@ -1,4 +1,4 @@
-This is the source code of EMDQ, we also included other methods that used in the experiments in the paper.
+This is the Matlab code of EMDQ, we also included other methods that used in the experiments in the paper.
 
 Try demo_2D.m in the "code" folder
 
