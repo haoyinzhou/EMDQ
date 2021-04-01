@@ -21,6 +21,9 @@
 % inliersMask_final: outliers removal results of EMDQ (0 and 1)
 % dq_points and mu_points: the dual-quertion and scale factors of the feature matches 
 %
+% X1 = mu_points * dq_points(X2). In the code, it is X1 = mu_points * WarpPosByDq(dq_points, X2)
+% WarpPosByDq() is the function of dual quaternion-based transformation.
+%
 % This program is distributed in the hope that it will be useful, but
 % WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU

@@ -1,9 +1,9 @@
-% <CopyRight 2019> Haoyin Zhou, Jayender Jagadeesan
+% <CopyRight 2019> Haoyin Zhou, Jagadeesan Jayender
 % Surgical Planning Laboratory
 % Brigham and Women's Hospital
 % Harvard Medical School
-% Zhou, Haoyin, and Jayender Jagadeesan. "Smooth Deformation Field-based 
-% Mismatch Removal in Real-time."
+% Zhou, Haoyin, and Jagadeesan Jayender. "Smooth Deformation Field-based Mismatch Removal in Real-time."
+% arXiv preprint arXiv:2007.08553 (2020).
 
 clear 
 clc
@@ -57,7 +57,7 @@ ShowMatchOutliersRemovalResults( I2, X1, X2, inliersMask_final, 'EMDQ' );
 plot(X2(1,inliersMask_final),X2(2,inliersMask_final),'bo', 'MarkerSize',3,'LineWidth', 1.5);
 
 % generation and visulization of the deformation field 
-% [gridcoord, gridcoord_dq, dq_grid, mu_grid, gridmask] = GenerateGridDeformationField( X2(:,inliersMask_final), dq_points(inliersMask_final,:), mu_points(inliersMask_final,:), 50, EMDQparams, size(I1,2), size(I1,1), 1.5);
+% note that the slow computaiton here is caused by Matlab drawing arrows.
 [gridcoord, gridcoord_dq, dq_grid, mu_grid, gridmask] = GenerateGridDeformationField( X2(:,inliersMask_final), dq_points(inliersMask_final,:), mu_points(inliersMask_final,:), 50, EMDQparams, size(I1,2), size(I1,1), 0.0);
 ShowGridDeformationField(I2, gridcoord, gridcoord_dq, gridmask);
 
